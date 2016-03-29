@@ -1,0 +1,35 @@
+﻿<table>
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Author
+        </th>
+        <th>
+            Page Count
+        </th>
+        <th>
+            Genre
+        </th>
+    </tr>
+    <tr ng-repeat="book in controller.books">
+        <td>
+            {{book.title}}
+        </td>
+        <td>
+            {{book.author}}
+        </td>
+        <td>
+            {{book.pageCount}}
+        </td>
+        <td>
+            {{book.genre}}
+        </td>
+        <td>
+            {{}}
+        </td>
+    </tr>
+
+
+</table>
