@@ -12,49 +12,36 @@ namespace WebApiRound2.Controllers
     [Route("api/[controller]")]
     public class BooksController : Controller
     {
-        static List<Book> _books = new List<Book>()
-        {
-            new Book()
-            {
-                Id = 1,
-                Title = "Lord of the Rings",
-                Author = "J.R.R. Tolkien",
-                PageCount = 1329,
-                Genre = "High Fantasy"
-            },
 
-            new Book()
-            {
-                Id = 2,
-                Title = "Great Gatsby",
-                Author = "F. Scott Fitzgerald",
-                PageCount = 192,
-                Genre = "Modernist Fiction"
-            },
+        private ApplicationDbContext _db;
 
-            new Book()
-            {
-                Id = 3,
-                Title= "To Kill a Mockingbird",
-                Author = "Harper Lee",
-                PageCount = 281,
-                Genre = "Modernist Fiction"
-            }
-        };
-        
+        public BooksController(ApplicationDbContext db) {
+            _db = db;
+        }
 
         // GET: api/values
         [HttpGet]
         public IEnumerable<Book> Get()
         {
-            return _books;
+            return _db.Books.ToList();
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
         public Book Get(int id)
         {
-            return _books.First(b => b.Id == id);
+            return _db.Books.First(b => b.Id == id);
+
+
+            //or public IActionResult Get(int id){
+            //var book = _db.Books.First(b => b.Id == id);
+            //if (book != null)
+            //{
+            //    return Ok(book);
+            //}
+            //return HttpNotFound();
+            //}
+
         }
 
         // POST api/values
@@ -62,11 +49,11 @@ namespace WebApiRound2.Controllers
         public IActionResult Post([FromBody] Book book)
         {
 
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
-                //another method to generate id for book
-                book.Id = _books.Max(b => b.Id) + 1;
-                _books.Add(book);
+                _db.Books.Add(book);
+                _db.SaveChanges();
 
                 return Ok();
             }
@@ -86,11 +73,13 @@ namespace WebApiRound2.Controllers
         {
             if (ModelState.IsValid)
             {
-                Book dbBook = _books.First(b => b.Id == id);
+                Book dbBook = _db.Books.First(b => b.Id == id);
                 dbBook.Title = book.Title;
                 dbBook.Author = book.Author;
                 dbBook.PageCount = book.PageCount;
                 dbBook.Genre = book.Genre;
+
+                _db.SaveChanges();
 
                 return Ok();
             }
@@ -104,6 +93,13 @@ namespace WebApiRound2.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            var dbBook = _db.Books.First(b => b.Id == id);
+
+            if(dbBook != null)
+            {
+                _db.Books.Remove(dbBook);
+                _db.SaveChanges();
+            }
         }
     }
 }
