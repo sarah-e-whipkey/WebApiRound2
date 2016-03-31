@@ -1,16 +1,28 @@
-﻿<form ng-submit="controller.addBook(book)">
-    <label>Title:</label>
-    <input type="text" ng-model="book.title"  />
+﻿<form ng-submit="controller.saveBook()">
+    <div>
+        <div ng-repeat="error in controller.errors.title" style="color:crimson">{{error}}</div>
+        <label>Title:</label>
+        <input type="text" ng-model="controller.book.title" />
+    </div>
 
-    <label>Author:</label>
-    <input type="text" ng-model="book.author" />
+    <div>
+        <div ng-repeat="error in controller.errors.author" style="color:crimson">{{error}}</div>
+        <label>Author:</label>
+        <input type="text" ng-model="controller.book.author" />
+    </div>
 
-    <label>Page Count:</label>
-    <input type="text" ng-model="book.pageCount" />
+    <div>
+        <div ng-repeat="error in controller.errors.pageCount" style="color:crimson">{{error}}</div>
+        <label>Page Count:</label>
+        <input type="text" ng-model="controller.book.pageCount" />
+    </div>
 
-    <label>Genre:</label>
-    <input type="text" ng-model="book.genre" />
+    <div>
+        <div ng-repeat="error in controller.errors.genre" style="color:crimson">{{error}}</div>
+        <label>Genre:</label>
+        <input type="text" ng-model="controller.book.genre" />
+    </div>
 
-    <input type="submit" value="Add" /><br />
+    <input type="submit" value="Save" /><br />
  
 </form>

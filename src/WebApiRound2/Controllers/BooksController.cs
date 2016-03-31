@@ -52,18 +52,28 @@ namespace WebApiRound2.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Book Get(int id)
         {
-            return "value";
+            return _books.First(b => b.Id == id);
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] Book book)
+        public IActionResult Post([FromBody] Book book)
         {
-            //another method to generate id for book
-            book.Id =_books.Max(b => b.Id) + 1;
-            _books.Add(book);
+
+            if (ModelState.IsValid)
+            {
+                //another method to generate id for book
+                book.Id = _books.Max(b => b.Id) + 1;
+                _books.Add(book);
+
+                return Ok();
+            }
+            else
+            {
+                return HttpBadRequest(ModelState);
+            }
         }
 
 
@@ -72,13 +82,22 @@ namespace WebApiRound2.Controllers
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]Book book)
+        public IActionResult Put(int id, [FromBody]Book book)
         {
-            Book dbBook = _books.Find(b => b.Id == id);
-            dbBook.Title = book.Title;
-            dbBook.Author = book.Author;
-            dbBook.PageCount = book.PageCount;
-            dbBook.Genre = book.Genre;
+            if (ModelState.IsValid)
+            {
+                Book dbBook = _books.First(b => b.Id == id);
+                dbBook.Title = book.Title;
+                dbBook.Author = book.Author;
+                dbBook.PageCount = book.PageCount;
+                dbBook.Genre = book.Genre;
+
+                return Ok();
+            }
+            else
+            {
+                return HttpBadRequest(ModelState);
+            }
         }
 
         // DELETE api/values/5

@@ -31,6 +31,12 @@ namespace WebApiRound2 {
                 controller: WebApiRound2.Controllers.AddBookController,
                 controllerAs: 'controller'
             })
+            .state('editBook', {
+                url: '/books/edit/:id',
+                templateUrl: '/ngApp/addBook.html',
+                controller: WebApiRound2.Controllers.EditBookController,
+                controllerAs: 'controller'
+            })
             .state('notFound', {
                 url: '/notFound',
                 templateUrl: '/ngApp/notFound.html'
